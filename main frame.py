@@ -1,5 +1,4 @@
 import discord
-import time
 import random
 
 client = discord.Client()
