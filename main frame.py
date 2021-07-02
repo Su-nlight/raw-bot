@@ -1,24 +1,6 @@
-import random
-import requests
-import json
 import discord
-
-
-def quote():
-    response= requests.get('https://zenquotes.io/api/random')
-    json_data= json.loads(response.text)
-    quote = json_data[0]['q'] + "  - " +json_data[0]['a']
-    return(quote)
-def daily_quote():
-    response= requests.get('https://zenquotes.io/api/today')
-    json_data = json.loads(response.text)
-    daily_quote = json_data[0]['q']  + "  - " + json_data[0]['a']
-    return(daily_quote)
-def intro():
-    res=["Hello! \n I'm Raw Bot. you can call me Rawwy. 😁",
-         "Hey there! \n I would like to introduce myself as Rawwy. \n Officially known as Raw Bot."]
-    res1=random.choice(res)
-    return (res1)
+import time
+import random
 
 client = discord.Client()
 
@@ -33,14 +15,17 @@ async def on_message(message):
         return
 
     if message.content.startswith('hello') or message.content.startswith('Hello') or message.content.startswith('hello rawey'):
-
         await message.channel.send("Hello! {0.author.mention}".format(message))
 
     if message.content.startswith("$chat"):
         await message.channel.send("Hi buddy!")
 
     if message.content.startswith('$quote') or message.content.startswith('$q'):
+        from quotes import quote
         await message.channel.send (quote())
+    if message.content.startswith('$daily quote') or message.content.startswith('$dq'):
+        from quotes import daily_quote
+        await message.channel.send(daily_quote())
 
     if message.content.startswith('$spam'):
         try:
@@ -56,9 +41,8 @@ async def on_message(message):
                 i += 1
                 continue;
 
-    if message.content.startswith('$daily quote') or message.content.startswith('$dq'):
-       await message.channel.send(daily_quote())
     if message.content.startswith('$intro'):
+       from misc_func import intro
        await message.channel.send(intro())
     if message.content.startswith('$help'):
         embed=discord.Embed(title="All Commands",
@@ -68,4 +52,21 @@ async def on_message(message):
                                color=0xFF5733)
         await message.channel.send(embed=embed)
 
+    if message.content.startswith("$dev tools") or message.content.startswith("$dt"):
+        trial1=message.author
+        await message.channel.send("Please provide one time password given to Devs:")
+        pw = str(random.randint(0000, 9999))
+        print(pw)
+        @client.event
+        async def on_message(message):
+           if message.author==client.user:
+               return
+           if message.content.startswith(pw) and message.author==trial1:
+               await message.channel.send("Access Granted")
+               return
+           else:
+               await message.channel.send("Access Denied")
+               return
+
+            
 client.run(TOKEN)
