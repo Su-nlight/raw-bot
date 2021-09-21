@@ -18,7 +18,6 @@ def help():
     return (embed)
 
 def num_search(pn):
-    from phonenumbers import geocoder, carrier
     ph = phonenumbers.parse(pn, "CH")
     trialx = geocoder.description_for_number(ph, "en")
     trialy = carrier.name_for_number(ph, "en")
