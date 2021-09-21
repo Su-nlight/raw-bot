@@ -1,5 +1,6 @@
-import discord
 import random
+import discord
+import phonenumbers
 
 client = discord.Client()
 
@@ -14,6 +15,7 @@ async def on_message(message):
         return
 
     if message.content.startswith('hello') or message.content.startswith('Hello') or message.content.startswith('hello rawey'):
+
         await message.channel.send("Hello! {0.author.mention}".format(message))
 
     if message.content.startswith("$chat"):
@@ -40,32 +42,41 @@ async def on_message(message):
                 i += 1
                 continue;
 
+    if message.content.startswith("$cht"):
+        pass
+        await message.channel.send()
+
     if message.content.startswith('$intro'):
        from misc_func import intro
        await message.channel.send(intro())
+
     if message.content.startswith('$help'):
-        embed=discord.Embed(title="All Commands",
-                              description="$intro - Introduces himself.\n\n"
-                                          "$quote - Sends a Random quote.\nCan also be used as '$q' \n \n"
-                                          "$dailyquote - Sends quote of the day.\n Can also be used as '$dq\n\n",
-                               color=0xFF5733)
-        await message.channel.send(embed=embed)
+        from misc_func import help
+        await message.channel.send(embed=help())
 
     if message.content.startswith("$dev tools") or message.content.startswith("$dt"):
-        trial1=message.author
+        trial1 = message.author
         await message.channel.send("Please provide one time password given to Devs:")
         pw = str(random.randint(0000, 9999))
         print(pw)
+
         @client.event
         async def on_message(message):
-           if message.author==client.user:
-               return
-           if message.content.startswith(pw) and message.author==trial1:
-               await message.channel.send("Access Granted")
-               return
-           else:
-               await message.channel.send("Access Denied")
-               return
+            if message.author == client.user:
+                return
+            if message.content.startswith(pw) and message.author == trial1:
+                await message.channel.send("Access Granted")
+                return
+            else:
+                await message.channel.send("Access Denied")
+                return
+
+    if message.content.startswith('$sn'):
+        pn = message.content.replace("$sn", "").strip()
+        from misc_func import num_search
+        trialx,trialy=num_search(pn)
+        await message.channel.send("Carrier Name is " + str(trialy) + "\nRegion is " + str(trialx))
+    print("Process Returned")
 
             
 client.run(TOKEN)
