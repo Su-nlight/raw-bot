@@ -1,6 +1,5 @@
 import random
 import discord
-import phonenumbers
 
 client = discord.Client()
 
@@ -10,12 +9,12 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    message.content=message.content.lower()
 
     if message.author == client.user:
         return
 
-    if message.content.startswith('hello') or message.content.startswith('Hello') or message.content.startswith('hello rawey'):
-
+    if message.content.startswith('hello') or message.content.startswith('hello rawey'):
         await message.channel.send("Hello! {0.author.mention}".format(message))
 
     if message.content.startswith("$chat"):
@@ -43,8 +42,7 @@ async def on_message(message):
                 continue;
 
     if message.content.startswith("$cht"):
-        pass
-        await message.channel.send()
+        await message.channel.send("Test Complete.")
 
     if message.content.startswith('$intro'):
        from misc_func import intro
@@ -76,7 +74,9 @@ async def on_message(message):
         from misc_func import num_search
         trialx,trialy=num_search(pn)
         await message.channel.send("Carrier Name is " + str(trialy) + "\nRegion is " + str(trialx))
-    print("Process Returned")
 
+    if message.content.startswith('$bn') or message.content.startswith('$botnews'):
+        from misc_func import bot_news
+        await message.channel.send(embed=bot_news())
             
 client.run(TOKEN)
