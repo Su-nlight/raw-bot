@@ -27,6 +27,14 @@ def num_search(pn):
 
 def bot_news():
     embed = discord.Embed(title="📰📰 New Updates In Raw Bot 📰📰",
-                          description="1) Now You All Can Use Bot Commands Irrespective Of Case.\n       Dated --- 21/09/2021",
+                          description="1) Now You All Can Use Bot Commands Irrespective Of Case.\n       Dated --- 21/09/2021\n\n"
+                                      "2) Now contact us on raw_bot@outlook.com.\n       Dated --- 04/10/2021\n\n"
+                                      "3) New features are added that is you can check Temperature and AQI of provided location\n       Dated --- 20/11/2021\n\n",
                           color=0x065535)
     return embed
+
+
+def inform(msg,x,i):
+   m="message from {0}".format(x)
+   myobj=gTTS(text=(m+msg), lang='en', slow=False)
+   myobj.save('msg{0}.mp3'.format(i))
