@@ -3,6 +3,13 @@ import discord
 
 client = discord.Client()
 
+#------------------------------------------------------------------------------#
+a=0
+def some():
+    global a
+    a+=1
+#------------------------------------------------------------------------------#
+
 @client.event
 async def on_ready():
     print("{0.user} is online now.".format(client))
@@ -13,20 +20,45 @@ async def on_message(message):
 
     if message.author == client.user:
         return
+#------------------------------------------------------------------------------#
 
     if message.content.startswith('hello') or message.content.startswith('hello rawey'):
         await message.channel.send("Hello! {0.author.mention}".format(message))
 
     if message.content.startswith("$chat"):
         await message.channel.send("Hi buddy!")
-
+ #------------------------------------------------------------------------------#
+        
     if message.content.startswith('$quote') or message.content.startswith('$q'):
         from quotes import quote
         await message.channel.send (quote())
+        
     if message.content.startswith('$daily quote') or message.content.startswith('$dq'):
         from quotes import daily_quote
         await message.channel.send(daily_quote())
+ #------------------------------------------------------------------------------#
 
+    if message.content.startswith('$weather temp'):
+        mesg=message.content.replace('$weather ', "")
+        mesg.split(" ")
+        from weather import temperature
+        await message.channel.send(temperature(mesg[0],mesg[1]))
+        
+    if message.content.startswith('$aqi'):
+        mesg=(message.content.replace("$aqi ",""))
+        mesg.split(" ")
+        from weather import air_q
+        await message.channel.send(air_q(mesg[0],mesg[1]))
+#------------------------------------------------------------------------------#  
+
+    if message.content.startswith('$inform'):
+        msg=message.content.replace("$inform", " ")
+        from misc_func import inform
+        inform(msg, message.author.name,a)
+        some()
+        await message.channel.send("Your message is recorded and sent.")
+#------------------------------------------------------------------------------#
+        
     if message.content.startswith('$spam'):
         try:
             ac = message.content.replace("$spam", "").strip()
@@ -40,17 +72,17 @@ async def on_message(message):
                 await message.channel.send("honey bee. spam....")
                 i += 1
                 continue;
-
-    if message.content.startswith("$cht"):
-        await message.channel.send("Test Complete.")
+ #------------------------------------------------------------------------------#
 
     if message.content.startswith('$intro'):
        from misc_func import intro
        await message.channel.send(intro())
+#------------------------------------------------------------------------------#
 
     if message.content.startswith('$help'):
         from misc_func import help
         await message.channel.send(embed=help())
+#------------------------------------------------------------------------------#
 
     if message.content.startswith("$dev tools") or message.content.startswith("$dt"):
         trial1 = message.author
@@ -68,12 +100,14 @@ async def on_message(message):
             else:
                 await message.channel.send("Access Denied")
                 return
+#------------------------------------------------------------------------------#
 
     if message.content.startswith('$sn'):
         pn = message.content.replace("$sn", "").strip()
         from misc_func import num_search
         trialx,trialy=num_search(pn)
         await message.channel.send("Carrier Name is " + str(trialy) + "\nRegion is " + str(trialx))
+#------------------------------------------------------------------------------#
 
     if message.content.startswith('$bn') or message.content.startswith('$botnews'):
         from misc_func import bot_news
