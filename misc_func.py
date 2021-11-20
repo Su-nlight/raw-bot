@@ -16,7 +16,7 @@ def help():
                                       "$sn [Number] - Sends Region and carrier of provided number (with country code)\n\n"
                                       "$dailyquote - Sends quote of the day.\n Can also be used as '$dq\n\n"
                                       "$botnews - Sends recent news of bot released by developer \n Can also be used as $bn",
-                          color=0xFF5733)
+                          color=0x047806)
     return embed
 
 def num_search(pn):
